@@ -12,35 +12,33 @@ class Controller:
 
     # -------- EMPLOYEE --------
     # set EMPLOYEE info
-    def set_emp_number(self, emp_number):
-        if len(emp_number) <= 4:
-            if type(emp_number) == type(5):
-                self.model.set_emp_number(emp_number)
-    def set_emp_fio(self, emp_fio):
-        if self.is_string(emp_fio) and not self.is_empty(emp_fio) and len(emp_fio) <= 50:
-            self.model.set_emp_fio(emp_fio)
-    def set_emp_job(self, emp_job):
-        if self.is_string(emp_job) and not self.is_empty(emp_job) and len(emp_job) <= 100:
-            self.model.set_emp_job(emp_job)
+    def set_employee_number(self, employee_number):
+        self.model.set_employee_number(employee_number)
+    def set_employee_old_number(self, number):
+        self.model.set_employee_old_number(number)
+    def set_employee_fio(self, employee_fio):
+        if self.is_string(employee_fio) and not self.is_empty(employee_fio) and len(employee_fio) <= 50:
+            self.model.set_employee_fio(employee_fio)
+    def set_employee_job(self, employee_job):
+        if self.is_string(employee_job) and not self.is_empty(employee_job) and len(employee_job) <= 100:
+            self.model.set_employee_job(employee_job)
     # add EMPLOYEE
-    def add_emp(self):
-        self.model.add_emp()
+    def add_employee(self):
+        self.model.add_employee()
     def remove_employee(self, number):
         self.model.remove_employee(number)
 
 
-
-
-
-
     def delete_emp(self):
-        self.model.delete_emp()
-    def update_emp(self):
-        self.model.update_emp('фио','Рабушка Алеся Александровна')
+        self.model.delete_employee()
+    def update_employee(self):
+        self.model.update_employee()
 
     # ------------- EQUIPMENT ---------------
     def set_equipment_number(self, number):
         self.model.set_equipment_number(number)
+    def set_equipment_old_number(self, number):
+        self.model.set_equipment_old_number(number)
     def set_equipment_name(self, name):
         self.model.set_equipment_name(name)
     def set_equipment_type(self, type):
@@ -49,16 +47,22 @@ class Controller:
         self.model.add_equipment()
     def remove_equipment(self, number):
         self.model.remove_equipment(number)
+    def update_equipment(self):
+        self.model.update_equipment()
 
     # ------------- WORK AREA --------------------
     def set_work_area_number(self, number):
         self.model.set_work_area_number(number)
+    def set_work_area_old_number(self, number):
+        self.model.set_work_area_old_number(number)
     def set_work_area_name(self, name):
         self.model.set_work_area_name(name)
     def add_work_area(self):
         self.model.add_work_area()
     def remove_work_area(self, number):
         self.model.remove_work_area(number)
+    def update_work_area(self):
+        self.model.update_work_area()
 
 
     # -------------- TECH INSPECTION ------------
@@ -72,6 +76,10 @@ class Controller:
         self.model.set_tech_inspection_reason(reason)
     def add_tech_inspection(self):
         self.model.add_tech_inspection()
+    def remove_tech_inspection(self, date):
+        self.model.remove_tech_inspection(date)
+    def update_tech_inspection(self):
+        self.model.update_tech_inspection()
 
 
     # ---------------------------------------------------------

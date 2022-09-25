@@ -12,6 +12,7 @@ from kivy.factory import Factory
 
 from View.add_popups import AddPopupEmp, AddPopupEquipment, AddPopupWorkArea, AddPopupTechInspection
 from View.remove_popups import RemovePopupEquipment, RemovePopupWorkArea, RemovePopupTechInspection, RemovePopupEmployee
+from View.update_popups import UpdatePopupEquipment, UpdatePopupWorkArea, UpdatePopupEmployee, UpdatePopupTechInspection
 
 
 class MainScreen(MDScreen):
@@ -159,13 +160,21 @@ class MainScreen(MDScreen):
     # open UPDATE POPUP
     def open_update_popup(self):
         if self.current_table_id == 1:
-            Factory.UpdatePopupWorkArea(controller = self.controller, model = self.model, table = self).open()
+            update_work_area = UpdatePopupWorkArea(controller = self.controller, model = self.model, table = self)
+            update_work_area.set_previous_info(self.unique_info)
+            update_work_area.open()
         elif self.current_table_id == 2:
-            Factory.UpdatePopupEquipment(controller = self.controller, model = self.model, table = self).open()
+            update_equipment = UpdatePopupEquipment(controller = self.controller, model = self.model, table = self)
+            update_equipment.set_previous_info(self.unique_info)
+            update_equipment.open()
         elif self.current_table_id == 3:
-            Factory.UpdatePopupTechInspection(controller = self.controller, model = self.model, table = self).open()
+            update_tech_inspection = UpdatePopupTechInspection(controller = self.controller, model = self.model, table = self)
+            update_tech_inspection.set_previous_info(self.unique_info)
+            update_tech_inspection.open()
         elif self.current_table_id == 4:
-            Factory.UpdatePopupEmp(controller = self.controller, model = self.model, table = self).open()
+            update_employee = UpdatePopupEmployee(controller = self.controller, model = self.model, table = self)
+            update_employee.set_previous_info(self.unique_info)
+            update_employee.open()
 
 
 

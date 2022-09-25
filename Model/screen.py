@@ -1,3 +1,6 @@
+from datetime import datetime
+
+
 class Model:
     def __init__(self, controller, cursor, connection):
         self.controller = controller
@@ -8,8 +11,10 @@ class Model:
         # WORK AREA
         self.work_area_name = ''
         self.work_area_number = 0
+        self.work_area_old_number = 0
         # EQUIPMENT
         self.equipment_number = 0
+        self.equipment_old_number = 0
         self.equipment_name = ''
         self.equipment_type = ''
         # TECH INSPECTION
@@ -18,24 +23,27 @@ class Model:
         self.tech_inspection_worker_fio = ''
         self.tech_inspection_reason = ''
         # EMPLOYEE
-        self.emp_number = 6493
-        self.emp_fio = ''
-        self.emp_job = ''
+        self.employee_number = 0
+        self.employee_old_number = 0
+        self.employee_fio = ''
+        self.employee_job = ''
 
 
     # ------------- EMPLOYEE --------
-    def set_emp_number(self, emp_number):
-        self.emp_number = emp_number
-    def set_emp_fio(self, emp_fio):
-        self.emp_fio = emp_fio
-    def set_emp_job(self, emp_job):
-        self.emp_job = emp_job
+    def set_employee_number(self, emp_number):
+        self.employee_number = emp_number
+    def set_employee_old_number(self, emp_number):
+        self.employee_old_number = emp_number
+    def set_employee_fio(self, emp_fio):
+        self.employee_fio = emp_fio
+    def set_employee_job(self, emp_job):
+        self.employee_job = emp_job
 
     # add EMPLOYEE info
-    def add_emp(self):
-        if self.emp_number != '':
+    def add_employee(self):
+        if self.employee_number != '':
             self.cursor.execute(f"insert into сотрудник(табельный_номер, фио, должность)"
-                                f" values({self.emp_number},'{self.emp_fio}','{self.emp_job}')")
+                                f" values({self.employee_number},'{self.employee_fio}','{self.employee_job}')")
             self.connection.commit()
     # delete EMPLOYEE info
     def remove_employee(self, number):
@@ -43,11 +51,11 @@ class Model:
                             f" where табельный_номер = {int(number)}")
         self.connection.commit()
     # update EMPLOYEE info
-    def update_emp(self, column_name, new_data):
-        print(column_name)
+    def update_employee(self):
+        print(self.employee_old_number, self.employee_fio, self.employee_job )
         self.cursor.execute(f"update сотрудник"
-                            f" set {column_name} = '{new_data}'"
-                            f" where табельный_номер = {self.emp_number}")
+                            f" set табельный_номер = '{int(self.employee_number)}', фио = '{self.employee_fio}', должность = '{self.employee_job}'"
+                            f" where табельный_номер = {self.employee_old_number}")
         self.connection.commit()
 
 
@@ -55,6 +63,8 @@ class Model:
     # ------------ WORK AREA ------------
     def set_work_area_number(self, number):
         self.work_area_number = number
+    def set_work_area_old_number(self, number):
+        self.work_area_old_number = number
     def set_work_area_name(self, name):
         self.work_area_name = name
     def add_work_area(self):
@@ -67,9 +77,17 @@ class Model:
                             f" where номер = {int(number)}")
         self.connection.commit()
 
+    def update_work_area(self):
+        self.cursor.execute(f"update производственный_участок"
+                            f" set название = '{self.work_area_name}', номер = '{self.work_area_number}'"
+                            f" where номер = {int(self.work_area_old_number)}")
+        self.connection.commit()
+
     # ------------ EQUIPMENT -------------
     def set_equipment_number(self, number):
         self.equipment_number = number
+    def set_equipment_old_number(self, number):
+        self.equipment_old_number = number
     def set_equipment_name(self, name):
         self.equipment_name = name
     def set_equipment_type(self, type):
@@ -82,10 +100,14 @@ class Model:
         self.cursor.execute(f"delete from оборудование"
                             f" where номер = {int(number)}")
         self.connection.commit()
+    def update_equipment(self):
+        print(self.equipment_type, self.equipment_number,self.equipment_name)
+        self.cursor.execute(f"update оборудование"
+                            f" set название = '{self.equipment_name}', тип = '{self.equipment_type}', номер = '{int(self.equipment_number)}'"
+                            f" where номер = {int(self.equipment_old_number)}")
+        self.connection.commit()
 
     # ------------ TECH INSPECTION --------
-    def set_tech_inspection_date(self, date):
-        self.tech_inspection_date = date
     def set_tech_inspection_result(self, result):
         self.tech_inspection_result = result
     def set_tech_inspection_worker_fio(self, fio):
@@ -96,7 +118,12 @@ class Model:
         self.cursor.execute(f"insert into технический_осмотр(дата, результат, сотрудник, причина)"
                             f" values('{self.tech_inspection_date}','{self.tech_inspection_result}','{self.tech_inspection_worker_fio}','{self.tech_inspection_reason}')")
         self.connection.commit()
-
+    def set_tech_inspection_date(self, birth):
+        self.tech_inspection_date = datetime.strptime(birth, '%Y-%m-%d')
+    def remove_tech_inspection(self, date):
+        self.cursor.execute(f" delete from технический_осмотр "
+                            f"where дата = '{date}'::date")
+        self.connection.commit()
 
 
     # return table ПРОИЗВОДСТВЕННЫЙ_УЧАСТОК

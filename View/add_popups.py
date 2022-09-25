@@ -1,5 +1,6 @@
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
+from kivymd.uix.pickers import MDDatePicker
 
 
 
@@ -69,6 +70,15 @@ class AddPopupTechInspection(Popup, Widget):
         self.controller.add_tech_inspection()
         self.table.to_table_tech_inspection()
 
+    def choose_tech_inspection_date(self):
+        date_dialog = MDDatePicker(min_year=2010, max_year=2022)
+        date_dialog.bind(on_save=self.set_tech_inspection_date_calendar)
+        date_dialog.open()
+    def set_tech_inspection_date_calendar(self, instance, value, date_range):
+        self.set_tech_inspection_date(str(value))
+        self.ids.add_tech_inspection_date.text = str(value)
+
+
 class AddPopupEmp(Popup, Widget):
     """
         Popup for EMPLOYEE table
@@ -80,20 +90,20 @@ class AddPopupEmp(Popup, Widget):
         self.table = table
 
     # set employee's number
-    def set_emp_number(self, emp_number):
-        self.controller.set_emp_number(emp_number)
+    def set_employee_number(self, employee_number):
+        self.controller.set_employee_number(employee_number)
 
     # set employee's fio
-    def set_emp_fio(self, emp_fio):
-        self.controller.set_emp_fio(emp_fio)
+    def set_employee_fio(self, employee_fio):
+        self.controller.set_employee_fio(employee_fio)
 
     # set employee's job
-    def set_emp_job(self, emp_job):
-        self.controller.set_emp_job(emp_job)
+    def set_employee_job(self, employee_job):
+        self.controller.set_employee_job(employee_job)
 
     # insert employee information into DB
-    def add_emp(self):
+    def add_employee(self):
         # add employee to DB
-        self.controller.add_emp()
+        self.controller.add_employee()
         # tell the table to update
         self.table.to_table_employee()

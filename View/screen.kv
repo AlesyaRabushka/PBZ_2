@@ -2,11 +2,11 @@
 #:import Window kivy.core.window
 
 <TooltipButton@MDTooltip+Button>
-    tooltip_bg_color: [192/256,110/256,240/256,1]
+    tooltip_bg_color: [68/256,182/256,235/256,1]
 
 <MyField@MDTextField>
     size_hint_x: None
-    width: '200'
+    width: '300'
     text_color: "000000"
 
     required: True
@@ -58,7 +58,7 @@
                 background_normal:''
                 #on_release: root.add_emp()
                 on_press: root.to_table_work_area()
-                #on_press: root.set_current_emp_number()
+                #on_press: root.set_current_4number()
                 #on_release: Factory.AddPopup(root.return_controller(), root.return_model()).open()
             Button:
                 text: 'Оборудование'
@@ -106,7 +106,7 @@
             MyField
                 id: pet_name_input
                 hint_text: 'Табельный номер'
-                on_text: root.set_emp_number(self.text)
+                on_text: root.set_employee_number(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
         GridLayout:
@@ -117,7 +117,7 @@
             MyField
                 id: pet_name_input
                 hint_text: 'ФИО'
-                on_text: root.set_emp_fio(self.text)
+                on_text: root.set_employee_fio(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
         GridLayout:
@@ -129,7 +129,7 @@
             MyField
                 id: pet_name_input
                 hint_text: 'Должность'
-                on_text: root.set_emp_job(self.text)
+                on_text: root.set_employee_job(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
         GridLayout:
@@ -142,7 +142,7 @@
                 background_normal:''
                 background_color: (68/256,182/256,235/256,1)
                 pos_hint: {"center_x":.5,"center_y":.5}
-                on_press: root.add_emp()
+                on_press: root.add_employee()
 
             Button:
                 text: 'Вернуться в главное меню'
@@ -178,10 +178,9 @@
             cols: 1
             rows: 1
             size_hint_y:None
-            padding:75,0,10,0
+            padding:100,30,10,0
 
             MyField
-                id: pet_name_input
                 hint_text: 'Номер участка'
                 max_text_length: 4
                 on_text: root.set_work_area_number(self.text)
@@ -191,10 +190,9 @@
             cols: 1
             rows: 1
             size_hint_y:None
-            padding:75,0,10,0
+            padding:100,10,10,0
             MyField
-                id: pet_name_input
-                hint_text: 'Название'
+                hint_text: 'Название участка'
                 on_text: root.set_work_area_name(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
@@ -203,7 +201,7 @@
             cols: 1
             rows: 2
             spacing:30
-            padding:100,0,100,40
+            padding:100,50,100,40
             Button:
                 text: 'Добавить'
                 background_normal:''
@@ -319,7 +317,7 @@
         adaptive_size: True
 
         GridLayout:
-            cols: 1
+            cols: 2
             rows: 1
             size_hint_y:None
             padding:75,0,10,0
@@ -329,6 +327,21 @@
                 hint_text: 'Дата'
                 on_text: root.set_tech_inspection_date(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
+
+            TooltipButton:
+                tooltip_text: 'календарь'
+                size_hint:None,None
+#            text:'Дата рождения'
+#            front_size:32
+                size: "40sp", "40sp"
+                on_press: root.choose_tech_inspection_date()
+                background_color:0,0,0,0
+
+                Image:
+                    source:'i.jpg'
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+                    size:"40sp","40sp"
 
         GridLayout:
             cols: 1
@@ -384,6 +397,7 @@
                 pos_hint: {"center_x": .5,"center_y":.5}
 
 
+# ------------------- REMOVE POPUPS ------------------------------
 <RemovePopupWorkArea@Popup>
     auto_dismiss: False
     title: 'Удалить информацию о производственных участках'
@@ -769,6 +783,400 @@
                 background_color: (68/256,182/256,235/256,1)
                 pos_hint: {"center_x":.5,"center_y":.5}
                 on_press: root.remove_equipment()
+
+            Button:
+                text: 'Вернуться в главное меню'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                #disabled: True if root.everything() else False
+                on_press: root.dismiss()
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+# ------------------------ UPDATE POPUPS --------------------
+<UpdatePopupWorkArea@Popup>
+    auto_dismiss: False
+    title: 'Обновить информацию о производственных участках'
+    separator_color: (68/256,182/256,235/256,1)
+    size_hint:None,None
+    size:(500,550)
+
+    BoxLayout:
+        # background color
+        canvas.before:
+            Color:
+                rgb: (1,1,1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+
+
+        orientation: "vertical"
+        adaptive_size: True
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Номер участка:"
+                markup: True
+                max_text_length: 5
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_work_area_number
+                on_text: root.set_work_area_number(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Название:"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_work_area_name
+                on_text: root.set_work_area_name(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+        GridLayout:
+            cols: 1
+            rows: 2
+            spacing:30
+            padding:100,0,100,40
+            Button:
+                text: 'Изменить'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                pos_hint: {"center_x":.5,"center_y":.5}
+                on_press: root.update_work_area()
+
+            Button:
+                text: 'Вернуться в главное меню'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                #disabled: True if root.everything() else False
+                on_press: root.dismiss()
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+<UpdatePopupEquipment@Popup>
+    auto_dismiss: False
+    title: 'Обновить информацию об оборудовании'
+    separator_color: (68/256,182/256,235/256,1)
+    size_hint:None,None
+    size:(500,550)
+
+    BoxLayout:
+        # background color
+        canvas.before:
+            Color:
+                rgb: (1,1,1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+
+
+        orientation: "vertical"
+        adaptive_size: True
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Номер:"
+                markup: True
+                max_text_length: 5
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_equipment_number
+                on_text: root.set_equipment_number(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Название:"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_equipment_name
+                on_text: root.set_equipment_name(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Тип:"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_equipment_type
+                on_text: root.set_equipment_type(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+        GridLayout:
+            cols: 1
+            rows: 2
+            spacing:30
+            padding:100,0,100,40
+            Button:
+                text: 'Изменить'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                pos_hint: {"center_x":.5,"center_y":.5}
+                on_press: root.update_equipment()
+
+            Button:
+                text: 'Вернуться в главное меню'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                #disabled: True if root.everything() else False
+                on_press: root.dismiss()
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+
+<UpdatePopupEmployee@Popup>
+    auto_dismiss: False
+    title: 'Обновить информацию о сотрудниках'
+    separator_color: (68/256,182/256,235/256,1)
+    size_hint:None,None
+    size:(500,550)
+
+    BoxLayout:
+        # background color
+        canvas.before:
+            Color:
+                rgb: (1,1,1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+
+
+        orientation: "vertical"
+        adaptive_size: True
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Табельный номер:"
+                markup: True
+                max_text_length: 5
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_employee_number
+                on_text: root.set_employee_number(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "ФИО"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_employee_fio
+                on_text: root.set_employee_fio(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Должность"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_employee_job
+                on_text: root.set_employee_job(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+        GridLayout:
+            cols: 1
+            rows: 2
+            spacing:30
+            padding:100,0,100,40
+            Button:
+                text: 'Изменить'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                pos_hint: {"center_x":.5,"center_y":.5}
+                on_press: root.update_employee()
+
+            Button:
+                text: 'Вернуться в главное меню'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                #disabled: True if root.everything() else False
+                on_press: root.dismiss()
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+<UpdatePopupTechInspection@Popup>
+    auto_dismiss: False
+    title: 'Обновить информацию о техническлм осмотре'
+    separator_color: (68/256,182/256,235/256,1)
+    size_hint:None,None
+    size:(500,550)
+
+    BoxLayout:
+        # background color
+        canvas.before:
+            Color:
+                rgb: (1,1,1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+
+
+        orientation: "vertical"
+        adaptive_size: True
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:75,0,10,0
+
+            MyField
+                id: update_tech_inspection_date
+                hint_text: 'Дата осмотра'
+                on_text: root.set_tech_inspection_date(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+            TooltipButton:
+                tooltip_text: 'календарь'
+                size_hint:None,None
+#            text:'Дата рождения'
+#            front_size:32
+                size: "40sp", "40sp"
+                on_press: root.choose_tech_inspection_date()
+                background_color:0,0,0,0
+
+                Image:
+                    source:'i.jpg'
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+                    size:"40sp","40sp"
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Результат"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_tech_inspection_result
+                on_text: root.set_tech_inspection_result(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "ФИО проверяющего"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_tech_inspection_worker_fio
+                on_text: root.set_tech_inspection_worker_fio(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Причина"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_tech_inspection_reason
+                on_text: root.set_tech_inspection_reason(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+        GridLayout:
+            cols: 1
+            rows: 2
+            spacing:30
+            padding:100,0,100,40
+            Button:
+                text: 'Изменить'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                pos_hint: {"center_x":.5,"center_y":.5}
+                on_press: root.update_tech_inspection()
 
             Button:
                 text: 'Вернуться в главное меню'
