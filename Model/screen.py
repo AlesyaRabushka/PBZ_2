@@ -19,6 +19,7 @@ class Model:
         self.equipment_type = ''
         # TECH INSPECTION
         self.tech_inspection_date = ''
+        self.tech_inspection_old_date = ''
         self.tech_inspection_result = ''
         self.tech_inspection_worker_fio = ''
         self.tech_inspection_reason = ''
@@ -101,7 +102,6 @@ class Model:
                             f" where номер = {int(number)}")
         self.connection.commit()
     def update_equipment(self):
-        print(self.equipment_type, self.equipment_number,self.equipment_name)
         self.cursor.execute(f"update оборудование"
                             f" set название = '{self.equipment_name}', тип = '{self.equipment_type}', номер = '{int(self.equipment_number)}'"
                             f" where номер = {int(self.equipment_old_number)}")
@@ -120,9 +120,16 @@ class Model:
         self.connection.commit()
     def set_tech_inspection_date(self, birth):
         self.tech_inspection_date = datetime.strptime(birth, '%Y-%m-%d')
+    def set_tech_inspection_old_date(self, birth):
+        self.tech_inspection_old_date = datetime.strptime(birth, '%Y-%m-%d')
     def remove_tech_inspection(self, date):
         self.cursor.execute(f" delete from технический_осмотр "
                             f"where дата = '{date}'::date")
+        self.connection.commit()
+    def update_tech_inspection(self):
+        self.cursor.execute(f"update технический_осмотр"
+                            f" set дата = '{self.tech_inspection_date}', результат = '{self.tech_inspection_result}', сотрудник = '{self.tech_inspection_worker_fio}', причина = '{self.tech_inspection_reason}'"
+                            f" where дата = '{self.tech_inspection_old_date}'::date")
         self.connection.commit()
 
 

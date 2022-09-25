@@ -68,6 +68,8 @@ class Controller:
     # -------------- TECH INSPECTION ------------
     def set_tech_inspection_date(self, date):
         self.model.set_tech_inspection_date(date)
+    def set_tech_inspection_old_date(self, date):
+        self.model.set_tech_inspection_old_date(date)
     def set_tech_inspection_result(self, result):
         self.model.set_tech_inspection_result(result)
     def set_tech_inspection_worker_fio(self, worker_fio):

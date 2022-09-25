@@ -82,10 +82,22 @@ class UpdatePopupTechInspection(Popup, Widget):
         self.unique_number = 0
 
     def set_previous_info(self, unique_info):
+        self.set_tech_inspection_old_date(unique_info[0])
+        self.set_tech_inspection_result(unique_info[1])
+        self.set_tech_inspection_worker_fio(unique_info[2])
+        self.set_tech_inspection_reason(unique_info[3])
         self.ids.update_tech_inspection_date.text = unique_info[0]
         self.ids.update_tech_inspection_result.text = unique_info[1]
         self.ids.update_tech_inspection_worker_fio.text = unique_info[2]
         self.ids.update_tech_inspection_reason.text = unique_info[3]
+
+    def choose_tech_inspection_date(self):
+        date_dialog = MDDatePicker(min_year=2010, max_year=2022)
+        date_dialog.bind(on_save=self.set_tech_inspection_date_calendar)
+        date_dialog.open()
+    def set_tech_inspection_date_calendar(self, instance, value, date_range):
+        self.set_tech_inspection_date(str(value))
+        self.ids.update_tech_inspection_date.text = str(value)
 
     def update_tech_inspection(self):
         self.controller.update_tech_inspection()
@@ -93,6 +105,8 @@ class UpdatePopupTechInspection(Popup, Widget):
 
     def set_tech_inspection_date(self, date):
         self.controller.set_tech_inspection_date(date)
+    def set_tech_inspection_old_date(self, date):
+        self.controller.set_tech_inspection_old_date(date)
 
     def set_tech_inspection_result(self, result):
         self.controller.set_tech_inspection_result(result)
@@ -107,13 +121,7 @@ class UpdatePopupTechInspection(Popup, Widget):
         self.controller.add_tech_inspection()
         self.table.to_table_tech_inspection()
 
-    def choose_tech_inspection_date(self):
-        date_dialog = MDDatePicker(min_year=2010, max_year=2022)
-        date_dialog.bind(on_save=self.set_tech_inspection_date_calendar)
-        date_dialog.open()
-    def set_tech_inspection_date_calendar(self, instance, value, date_range):
-        self.set_tech_inspection_date(str(value))
-        self.ids.add_tech_inspection_date.text = str(value)
+
 
 class UpdatePopupEmployee(Popup, Widget):
     def __init__(self, controller,model,table,**kw):
