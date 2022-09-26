@@ -12,6 +12,7 @@ class Model:
         self.work_area_name = ''
         self.work_area_number = 0
         self.work_area_old_number = 0
+        self.work_area_equipment_type = ''
         # EQUIPMENT
         self.equipment_number = 0
         self.equipment_old_number = 0
@@ -20,6 +21,7 @@ class Model:
         # TECH INSPECTION
         self.tech_inspection_date = ''
         self.tech_inspection_old_date = ''
+        self.tech_inspection_equipment_number = 0
         self.tech_inspection_result = ''
         self.tech_inspection_worker_fio = ''
         self.tech_inspection_reason = ''
@@ -28,6 +30,10 @@ class Model:
         self.employee_old_number = 0
         self.employee_fio = ''
         self.employee_job = ''
+
+        #SEARCH
+        self.search_tech_inspection_equipment_number = 0
+        self.table_search_tech_inspection = []
 
 
     # ------------- EMPLOYEE --------
@@ -68,10 +74,12 @@ class Model:
         self.work_area_old_number = number
     def set_work_area_name(self, name):
         self.work_area_name = name
+    def set_work_area_equipment_type(self, type):
+        self.work_area_equipment_type = type
     def add_work_area(self):
         if self.work_area_number != '':
-            self.cursor.execute(f"insert into производственный_участок(номер, название)"
-                                f" values({self.work_area_number},'{self.work_area_name}')")
+            self.cursor.execute(f"insert into производственный_участок(номер, название, тип_оборудования)"
+                                f" values({self.work_area_number},'{self.work_area_name}', '{self.work_area_equipment_type}')")
             self.connection.commit()
     def remove_work_area(self, number):
         self.cursor.execute(f"delete from производственный_участок"
@@ -80,7 +88,7 @@ class Model:
 
     def update_work_area(self):
         self.cursor.execute(f"update производственный_участок"
-                            f" set название = '{self.work_area_name}', номер = '{self.work_area_number}'"
+                            f" set название = '{self.work_area_name}', номер = '{self.work_area_number}', тип_оборудования = '{self.work_area_equipment_type}'"
                             f" where номер = {int(self.work_area_old_number)}")
         self.connection.commit()
 
@@ -110,13 +118,15 @@ class Model:
     # ------------ TECH INSPECTION --------
     def set_tech_inspection_result(self, result):
         self.tech_inspection_result = result
+    def set_tech_inspection_equipment_number(self, number):
+        self.tech_inspection_equipment_number = number
     def set_tech_inspection_worker_fio(self, fio):
         self.tech_inspection_worker_fio = fio
     def set_tech_inspection_reason(self, reason):
         self.tech_inspection_reason = reason
     def add_tech_inspection(self):
-        self.cursor.execute(f"insert into технический_осмотр(дата, результат, сотрудник, причина)"
-                            f" values('{self.tech_inspection_date}','{self.tech_inspection_result}','{self.tech_inspection_worker_fio}','{self.tech_inspection_reason}')")
+        self.cursor.execute(f"insert into технический_осмотр(дата, номер_оборудования, результат, сотрудник, причина)"
+                            f" values('{self.tech_inspection_date}',{self.tech_inspection_equipment_number},'{self.tech_inspection_result}','{self.tech_inspection_worker_fio}','{self.tech_inspection_reason}')")
         self.connection.commit()
     def set_tech_inspection_date(self, birth):
         self.tech_inspection_date = datetime.strptime(birth, '%Y-%m-%d')
@@ -128,7 +138,7 @@ class Model:
         self.connection.commit()
     def update_tech_inspection(self):
         self.cursor.execute(f"update технический_осмотр"
-                            f" set дата = '{self.tech_inspection_date}', результат = '{self.tech_inspection_result}', сотрудник = '{self.tech_inspection_worker_fio}', причина = '{self.tech_inspection_reason}'"
+                            f" set дата = '{self.tech_inspection_date}', номер_оборудования = '{self.tech_inspection_equipment_number}', результат = '{self.tech_inspection_result}', сотрудник = '{self.tech_inspection_worker_fio}', причина = '{self.tech_inspection_reason}'"
                             f" where дата = '{self.tech_inspection_old_date}'::date")
         self.connection.commit()
 
@@ -142,6 +152,7 @@ class Model:
             work_area = []
             work_area.append(row[0])
             work_area.append(row[1])
+            work_area.append(row[2])
             table_work_are_list.append(work_area)
         return table_work_are_list
 
@@ -170,6 +181,7 @@ class Model:
             tech_inspection.append(row[1])
             tech_inspection.append(row[2])
             tech_inspection.append(row[3])
+            tech_inspection.append(row[4])
             table_tech_inspection.append(tech_inspection)
         return table_tech_inspection
 
@@ -185,3 +197,30 @@ class Model:
             employee.append(row[2])
             table_emp_list.append(employee)
         return table_emp_list
+
+
+    # --------------------------- SEARCH ------------------------
+    def search_tech_inspection(self):
+        self.table_search_tech_inspection = []
+        self.cursor.execute(f"select технический_осмотр.дата, оборудование.номер,оборудование.название, оборудование.тип, технический_осмотр.результат "
+                            f"from технический_осмотр "
+                            f"inner join оборудование "
+                            f"on технический_осмотр.номер_оборудования = оборудование.номер "
+                            f"where оборудование.номер = {self.search_tech_inspection_equipment_number};")
+        rows = self.cursor.fetchall()
+        for row in rows:
+            tech_inspection = []
+            tech_inspection.append(row[0])
+            tech_inspection.append(row[1])
+            tech_inspection.append(row[2])
+            tech_inspection.append(row[3])
+            tech_inspection.append(row[4])
+            self.table_search_tech_inspection.append(tech_inspection)
+        print(self.table_search_tech_inspection)
+        self.controller.show_table_search_tech_inspection()
+
+    def set_search_tech_inspection_equipment_number(self, number):
+        self.search_tech_inspection_equipment_number = number
+    def return_table_search_tech_inspection(self):
+        print(self.table_search_tech_inspection)
+        return self.table_search_tech_inspection

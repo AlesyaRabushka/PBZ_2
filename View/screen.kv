@@ -6,6 +6,7 @@
 
 <MyField@MDTextField>
     size_hint_x: None
+    height: '50'
     width: '300'
     text_color: "000000"
 
@@ -41,7 +42,8 @@
             right_action_items:
                 [["credit-card-plus-outline",lambda x: root.open_add_popup(), "Добавить"],
                 ["credit-card-edit-outline", lambda x: root.open_update_popup(), "Редактировать"],
-                ["credit-card-remove-outline", lambda x: root.open_remove_popup(), "Удалить"]]
+                ["credit-card-remove-outline", lambda x: root.open_remove_popup(), "Удалить"],
+                ["credit-card-search-outline", lambda x: root.open_search_popup(), "Поиск"]]
 
         Label:
             id: lab
@@ -196,6 +198,16 @@
                 on_text: root.set_work_area_name(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
+        GridLayout:
+            cols: 1
+            rows: 1
+            size_hint_y:None
+            padding:100,10,10,0
+            MyField
+                hint_text: 'Тип используемого оборудования'
+                on_text: root.set_work_area_equipment_type(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
 
         GridLayout:
             cols: 1
@@ -319,7 +331,7 @@
         GridLayout:
             cols: 2
             rows: 1
-            size_hint_y:None
+            #size_hint_y:None
             padding:75,0,10,0
 
             MyField
@@ -343,6 +355,19 @@
                     center_y:self.parent.center_y
                     size:"40sp","40sp"
 
+
+        GridLayout:
+            cols: 1
+            rows: 1
+#            size_hint_y:None
+            padding:75,0,10,0
+            MyField
+                id: add_tech_inspection_equipment_number
+                hint_text: 'Номер оборудования'
+                on_text: root.set_tech_inspection_equipment_number(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
         GridLayout:
             cols: 1
             rows: 1
@@ -352,7 +377,7 @@
                 id: add_tech_inspection_result
                 hint_text: 'Результат'
                 on_text: root.set_tech_inspection_result(self.text)
-                pos_hint: {"center_x": .5,"center_y":.5}
+                pos_hint: {"center_x": .4,"center_y":.4}
 
         GridLayout:
             cols: 1
@@ -363,7 +388,7 @@
                 id: add_tech_inspection_worker_fio
                 hint_text: 'ФИО проводившего'
                 on_text: root.set_tech_inspection_worker_fio(self.text)
-                pos_hint: {"center_x": .5,"center_y":.5}
+                pos_hint: {"center_x": .4,"center_y":.4}
 
         GridLayout:
             cols: 1
@@ -377,8 +402,8 @@
                 pos_hint: {"center_x": .5,"center_y":.5}
 
         GridLayout:
-            cols: 1
-            rows: 2
+            cols: 2
+            rows: 1
             spacing:30
             padding:100,0,100,40
             Button:
@@ -1185,3 +1210,71 @@
                 #disabled: True if root.everything() else False
                 on_press: root.dismiss()
                 pos_hint: {"center_x": .5,"center_y":.5}
+
+
+
+
+
+
+    # ------------------------- SEARCH POPUPS --------------------------------
+<SearchPopupTechInspection@Popup>
+    auto_dismiss: False
+    title: 'Обновить информацию о техническлм осмотре'
+    separator_color: (68/256,182/256,235/256,1)
+    size_hint:None,None
+    size:(500,550)
+
+    BoxLayout:
+        # background color
+        canvas.before:
+            Color:
+                rgb: (1,1,1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+
+
+        orientation: "vertical"
+        adaptive_size: True
+
+        GridLayout:
+            cols: 1
+            rows: 1
+            size_hint_y:None
+            padding:75,0,10,0
+
+            MyField
+                id: update_tech_inspection_date
+                hint_text: 'Номер инвентаря'
+                on_text: root.set_search_tech_inspection_equipment_number(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+        GridLayout:
+            cols: 1
+            rows: 2
+            spacing:30
+            padding:100,0,100,40
+            Button:
+                text: 'Поиск'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                pos_hint: {"center_x":.5,"center_y":.5}
+                on_press: root.search_tech_inspection()
+
+            Button:
+                text: 'Вернуться в главное меню'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                #disabled: True if root.everything() else False
+                on_press: root.dismiss()
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+<FoundPopupTechInspection@Popup>
+    title: 'Результаты поиска'
+    #auto_dismiss:False
+    separator_color: (192/256,110/256,240/256,1)
+#    background_color:'#a910e6'
+    background_color: (1,1,1)
+    size_hint:None,None
+    size:(750,500)

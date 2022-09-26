@@ -1,11 +1,13 @@
 from kivy.uix.popup import Popup
 from kivy.uix.widget import Widget
 from kivymd.uix.pickers import MDDatePicker
+from kivymd.uix.datatables import MDDataTable
+from kivy.metrics import dp
 
 
 
 
-class AddPopupWorkArea(Popup, Widget):
+class SearchPopupWorkArea(Popup, Widget):
     """
     Popup for WORK AREA table
     """
@@ -25,7 +27,7 @@ class AddPopupWorkArea(Popup, Widget):
         self.controller.add_work_area()
         self.table.to_table_work_area()
 
-class AddPopupEquipment(Popup, Widget):
+class SearchPopupEquipment(Popup, Widget):
     """
         Popup for EQUIPMENT table
         """
@@ -46,45 +48,56 @@ class AddPopupEquipment(Popup, Widget):
         self.table.to_table_equipment()
 
 
-class AddPopupTechInspection(Popup, Widget):
+class SearchPopupTechInspection(Popup, Widget):
     """
         Popup for TECH INSPECTION table
         """
-    def __init__(self, controller, model, table, **kw):
+    def __init__(self, controller, model, **kw):
         super().__init__(**kw)
         self.model = model
         self.controller = controller
-        self.table = table
-
-    def set_tech_inspection_date(self, date):
-        self.controller.set_tech_inspection_date(date)
-
-    def set_tech_inspection_equipment_number(self, number):
-        self.controller.set_tech_inspection_equipment_number(number)
-
-    def set_tech_inspection_result(self, result):
-        self.controller.set_tech_inspection_result(result)
-
-    def set_tech_inspection_worker_fio(self, worker_fio):
-        self.controller.set_tech_inspection_worker_fio(worker_fio)
-
-    def set_tech_inspection_reason(self, reason):
-        self.controller.set_tech_inspection_reason(reason)
-
-    def add_tech_inspection(self):
-        self.controller.add_tech_inspection()
-        self.table.to_table_tech_inspection()
-
-    def choose_tech_inspection_date(self):
-        date_dialog = MDDatePicker(min_year=2010, max_year=2022)
-        date_dialog.bind(on_save=self.set_tech_inspection_date_calendar)
-        date_dialog.open()
-    def set_tech_inspection_date_calendar(self, instance, value, date_range):
-        self.set_tech_inspection_date(str(value))
-        self.ids.add_tech_inspection_date.text = str(value)
+        # self.table = MDDataTable(pos_hint={'center_y': 0.56, 'center_x': 0.5},
+        #                          use_pagination=True,
+        #                          check=True,
+        #                          column_data=[
+        #                              ("Дата", dp(40)),
+        #                              ("Номер оборудования", dp(40)),
+        #                              ("Результат", dp(60))], size_hint=(1, 0.7),
+        #                          row_data=self.model.return_table_search_tech_inspection())
+        #
+        # self.add_widget(self.table)
 
 
-class AddPopupEmp(Popup, Widget):
+    def set_search_tech_inspection_equipment_number(self, number):
+        self.controller.set_search_tech_inspection_equipment_number(number)
+
+    def search_tech_inspection(self):
+        self.controller.search_tech_inspection()
+
+class FoundPopupTechInspection(Popup, Widget):
+    def __init__(self, controller, model, **kw):
+        super().__init__(**kw)
+        self.controller = controller
+        self.model = model
+        self.found_list = self.model.return_table_search_tech_inspection()
+        self.table = MDDataTable(pos_hint={'center_y': 0.56, 'center_x': 0.5},
+                                 use_pagination=True,
+                                 check=True,
+                                 column_data=[
+                                     ("Дата", dp(40)),
+                                     ("Номер оборудования", dp(40)),
+                                     ("Название",dp(40)),
+                                     ("Тип", dp(40)),
+                                     ("Результат", dp(60))], size_hint=(1, 0.7),
+                                 row_data=self.found_list)
+
+        self.add_widget(self.table)
+
+
+
+
+
+class SearchPopupEmployee(Popup, Widget):
     """
         Popup for EMPLOYEE table
         """

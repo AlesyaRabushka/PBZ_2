@@ -13,6 +13,7 @@ from kivy.factory import Factory
 from View.add_popups import AddPopupEmp, AddPopupEquipment, AddPopupWorkArea, AddPopupTechInspection
 from View.remove_popups import RemovePopupEquipment, RemovePopupWorkArea, RemovePopupTechInspection, RemovePopupEmployee
 from View.update_popups import UpdatePopupEquipment, UpdatePopupWorkArea, UpdatePopupEmployee, UpdatePopupTechInspection
+from View.search_popups import SearchPopupEmployee, SearchPopupEquipment, SearchPopupWorkArea, SearchPopupTechInspection
 
 
 class MainScreen(MDScreen):
@@ -33,8 +34,9 @@ class MainScreen(MDScreen):
                                  use_pagination=True,
                                  check=True,
                                  column_data=[
-                                     ("Номер", dp(80)),
-                                     ("Название", dp(80))], size_hint=(1, 0.7),
+                                     ("Номер", dp(60)),
+                                     ("Название", dp(60)),
+                                     ("Тип оборудования", dp(60))], size_hint=(1, 0.7),
                                  row_data=self.controller.get_table_work_area())
         self.add_widget(self.table)
         self.table.bind(on_check_press=self.choose_record)
@@ -45,6 +47,7 @@ class MainScreen(MDScreen):
         if self.current_table_id == 1:
             self.unique_info.append(record_info[0])
             self.unique_info.append(record_info[1])
+            self.unique_info.append(record_info[2])
         elif self.current_table_id == 2:
             self.unique_info.append(record_info[0])
             self.unique_info.append(record_info[1])
@@ -54,6 +57,7 @@ class MainScreen(MDScreen):
             self.unique_info.append(record_info[1])
             self.unique_info.append(record_info[2])
             self.unique_info.append(record_info[3])
+            self.unique_info.append(record_info[4])
         elif self.current_table_id == 4:
             self.unique_info.append(record_info[0])
             self.unique_info.append(record_info[1])
@@ -71,8 +75,9 @@ class MainScreen(MDScreen):
                                  use_pagination=True,
                                  check = True,
                                  column_data=[
-                                     ("Номер", dp(80)),
-                                     ("Название", dp(80))], size_hint=(1, 0.7),
+                                     ("Номер", dp(60)),
+                                     ("Название", dp(60)),
+                                     ("Тип оборудования", dp(60))], size_hint=(1, 0.7),
                                  row_data=self.controller.get_table_work_area())
         self.add_widget(self.table)
         self.table.bind(on_check_press=self.choose_record)
@@ -100,7 +105,8 @@ class MainScreen(MDScreen):
                                  use_pagination=True,
                                  check=True,
                                  column_data=[
-                                     ("Дата", dp(60)),
+                                     ("Дата", dp(40)),
+                                     ("Номер оборудования", dp(40)),
                                      ("Результат", dp(60)),
                                      ("ФИО проверяющего", dp(60)),
                                      ("Причина", dp(60))], size_hint=(1, 0.7),
@@ -176,6 +182,20 @@ class MainScreen(MDScreen):
             update_employee.set_previous_info(self.unique_info)
             update_employee.open()
 
+    # ------- OPEN SETCH POPUPS ----------
+    def open_search_popup(self):
+        if self.current_table_id == 1:
+            search_work_area = SearchPopupWorkArea(controller=self.controller, model=self.model, table=self)
+            search_work_area.open()
+        elif self.current_table_id == 2:
+            search_equipment = SearchPopupEquipment(controller=self.controller, model=self.model, table=self)
+            search_equipment.open()
+        elif self.current_table_id == 3:
+            search_tech_inspection = SearchPopupTechInspection(controller=self.controller, model=self.model)
+            search_tech_inspection.open()
+        elif self.current_table_id == 4:
+            search_employee = SearchPopupEmployee(controller=self.controller, model=self.model, table=self)
+            search_employee.open()
 
 
 

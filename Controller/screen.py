@@ -1,5 +1,6 @@
 from Model.screen import Model
 from View.screen import MainScreen
+from View.search_popups import SearchPopupEmployee, SearchPopupEquipment, SearchPopupWorkArea, SearchPopupTechInspection, FoundPopupTechInspection
 
 class Controller:
     def __init__(self, cursor, connection):
@@ -8,6 +9,7 @@ class Controller:
 
         self.model = Model(controller = self, cursor = self.cursor, connection = self.connection)
         self.main_view = MainScreen(controller = self, model = self.model)
+
 
 
     # -------- EMPLOYEE --------
@@ -57,6 +59,8 @@ class Controller:
         self.model.set_work_area_old_number(number)
     def set_work_area_name(self, name):
         self.model.set_work_area_name(name)
+    def set_work_area_equipment_type(self, type):
+        self.model.set_work_area_equipment_type(type)
     def add_work_area(self):
         self.model.add_work_area()
     def remove_work_area(self, number):
@@ -70,6 +74,8 @@ class Controller:
         self.model.set_tech_inspection_date(date)
     def set_tech_inspection_old_date(self, date):
         self.model.set_tech_inspection_old_date(date)
+    def set_tech_inspection_equipment_number(self, number):
+        self.model.set_tech_inspection_equipment_number(number)
     def set_tech_inspection_result(self, result):
         self.model.set_tech_inspection_result(result)
     def set_tech_inspection_worker_fio(self, worker_fio):
@@ -82,6 +88,17 @@ class Controller:
         self.model.remove_tech_inspection(date)
     def update_tech_inspection(self):
         self.model.update_tech_inspection()
+
+
+    # ----------------- SEARCH --------------------------------
+    def get_table_search_tech_inspection(self):
+        return self.model.get_table_search_tech_inspection()
+    def set_search_tech_inspection_equipment_number(self, number):
+        self.model.set_search_tech_inspection_equipment_number(number)
+    def search_tech_inspection(self):
+        self.model.search_tech_inspection()
+    def show_table_search_tech_inspection(self):
+        FoundPopupTechInspection(controller=self, model = self.model).open()
 
 
     # ---------------------------------------------------------
