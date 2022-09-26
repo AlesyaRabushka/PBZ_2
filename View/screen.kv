@@ -1090,6 +1090,7 @@
                 on_press: root.dismiss()
                 pos_hint: {"center_x": .5,"center_y":.5}
 
+
 <UpdatePopupTechInspection@Popup>
     auto_dismiss: False
     title: 'Обновить информацию о техническлм осмотре'
@@ -1219,7 +1220,7 @@
     # ------------------------- SEARCH POPUPS --------------------------------
 <SearchPopupTechInspection@Popup>
     auto_dismiss: False
-    title: 'Обновить информацию о техническлм осмотре'
+    title: 'Поиск информации о техническом осмотре'
     separator_color: (68/256,182/256,235/256,1)
     size_hint:None,None
     size:(500,550)
@@ -1242,7 +1243,7 @@
             cols: 1
             rows: 1
             size_hint_y:None
-            padding:75,0,10,0
+            padding:75,50,20,0
 
             MyField
                 id: update_tech_inspection_date
@@ -1254,12 +1255,13 @@
             cols: 1
             rows: 2
             spacing:30
-            padding:100,0,100,40
+            padding:100,40,100,40
             Button:
                 text: 'Поиск'
+                height: '30'
                 background_normal:''
                 background_color: (68/256,182/256,235/256,1)
-                pos_hint: {"center_x":.5,"center_y":.5}
+                pos_hint: {"center_x":.5}
                 on_press: root.search_tech_inspection()
 
             Button:
@@ -1270,6 +1272,78 @@
                 on_press: root.dismiss()
                 pos_hint: {"center_x": .5,"center_y":.5}
 
+
+<SearchPopupEmployee@Popup>
+    auto_dismiss: False
+    title: 'Поиск информации о сотрудниках'
+    separator_color: (68/256,182/256,235/256,1)
+    size_hint:None,None
+    size:(500,550)
+
+    BoxLayout:
+        # background color
+        canvas.before:
+            Color:
+                rgb: (1,1,1)
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+
+
+        orientation: "vertical"
+        adaptive_size: True
+
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:75,50,20,0
+
+            MyField
+                id: search_employee_date
+                hint_text: 'Дата осмотра'
+                on_text: root.set_search_employee_date(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+            TooltipButton:
+                tooltip_text: 'календарь'
+                size_hint:None,None
+#            text:'Дата рождения'
+#            front_size:32
+                size: "40sp", "40sp"
+                on_press: root.choose_search_employee()
+                background_color:0,0,0,0
+
+                Image:
+                    source:'i.jpg'
+                    center_x:self.parent.center_x
+                    center_y:self.parent.center_y
+                    size:"40sp","40sp"
+
+        GridLayout:
+            cols: 1
+            rows: 2
+            spacing:30
+            padding:100,40,100,40
+            Button:
+                text: 'Поиск'
+                height: '30'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                pos_hint: {"center_x":.5}
+                on_press: root.search_employee_date()
+
+            Button:
+                text: 'Вернуться в главное меню'
+                background_normal:''
+                background_color: (68/256,182/256,235/256,1)
+                #disabled: True if root.everything() else False
+                on_press: root.dismiss()
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+
+
 <FoundPopupTechInspection@Popup>
     title: 'Результаты поиска'
     #auto_dismiss:False
@@ -1277,4 +1351,13 @@
 #    background_color:'#a910e6'
     background_color: (1,1,1)
     size_hint:None,None
-    size:(750,500)
+    size:(750,400)
+
+<FoundPopupSearchEmployee@Popup>
+    title: 'Результаты поиска'
+    #auto_dismiss:False
+    separator_color: (192/256,110/256,240/256,1)
+#    background_color:'#a910e6'
+    background_color: (1,1,1)
+    size_hint:None,None
+    size:(750,400)

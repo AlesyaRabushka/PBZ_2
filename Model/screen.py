@@ -34,6 +34,8 @@ class Model:
         #SEARCH
         self.search_tech_inspection_equipment_number = 0
         self.table_search_tech_inspection = []
+        self.table_search = []
+        self.search_employee_date = ''
 
 
     # ------------- EMPLOYEE --------
@@ -200,6 +202,7 @@ class Model:
 
 
     # --------------------------- SEARCH ------------------------
+    # SEARCH TECH INSPECTION
     def search_tech_inspection(self):
         self.table_search_tech_inspection = []
         self.cursor.execute(f"select технический_осмотр.дата, оборудование.номер,оборудование.название, оборудование.тип, технический_осмотр.результат "
@@ -216,11 +219,32 @@ class Model:
             tech_inspection.append(row[3])
             tech_inspection.append(row[4])
             self.table_search_tech_inspection.append(tech_inspection)
-        print(self.table_search_tech_inspection)
         self.controller.show_table_search_tech_inspection()
 
     def set_search_tech_inspection_equipment_number(self, number):
         self.search_tech_inspection_equipment_number = number
     def return_table_search_tech_inspection(self):
-        print(self.table_search_tech_inspection)
         return self.table_search_tech_inspection
+
+    # SEARCH EMPLOYEE
+    def search_employee(self):
+        self.table_search = []
+        self.cursor.execute(
+            f"select сотрудник.фио, сотрудник.должность "
+            f"from технический_осмотр "
+            f"inner join сотрудник "
+            f"on технический_осмотр.сотрудник = сотрудник.фио "
+            f"where технический_осмотр.дата = '{self.search_employee_date}'::date")
+        rows = self.cursor.fetchall()
+        for row in rows:
+            tech_inspection = []
+            tech_inspection.append(row[0])
+            tech_inspection.append(row[1])
+            self.table_search.append(tech_inspection)
+        self.controller.show_table_search_emeployee()
+
+    def set_search_employee_date(self, date):
+        self.search_employee_date = datetime.strptime(date, '%Y-%m-%d')
+
+    def return_table_search_employee(self):
+        return self.table_search

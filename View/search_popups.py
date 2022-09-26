@@ -56,16 +56,6 @@ class SearchPopupTechInspection(Popup, Widget):
         super().__init__(**kw)
         self.model = model
         self.controller = controller
-        # self.table = MDDataTable(pos_hint={'center_y': 0.56, 'center_x': 0.5},
-        #                          use_pagination=True,
-        #                          check=True,
-        #                          column_data=[
-        #                              ("Дата", dp(40)),
-        #                              ("Номер оборудования", dp(40)),
-        #                              ("Результат", dp(60))], size_hint=(1, 0.7),
-        #                          row_data=self.model.return_table_search_tech_inspection())
-        #
-        # self.add_widget(self.table)
 
 
     def set_search_tech_inspection_equipment_number(self, number):
@@ -105,23 +95,34 @@ class SearchPopupEmployee(Popup, Widget):
         super().__init__(**kw)
         self.model = model
         self.controller = controller
-        self.table = table
 
-    # set employee's number
-    def set_employee_number(self, employee_number):
-        self.controller.set_employee_number(employee_number)
+    def set_search_employee_date(self, date):
+        self.controller.set_search_employee_date(date)
 
-    # set employee's fio
-    def set_employee_fio(self, employee_fio):
-        self.controller.set_employee_fio(employee_fio)
+    def search_employee_date(self):
+        self.controller.search_employee_date()
 
-    # set employee's job
-    def set_employee_job(self, employee_job):
-        self.controller.set_employee_job(employee_job)
+    def choose_search_employee(self):
+        date_dialog = MDDatePicker(min_year=2010, max_year=2022)
+        date_dialog.bind(on_save=self.set_search_employee_date_calendar)
+        date_dialog.open()
+    def set_search_employee_date_calendar(self, instance, value, date_range):
+        self.set_search_employee_date(str(value))
+        self.ids.search_employee_date.text = str(value)
 
-    # insert employee information into DB
-    def add_employee(self):
-        # add employee to DB
-        self.controller.add_employee()
-        # tell the table to update
-        self.table.to_table_employee()
+
+class FoundPopupSearchEmployee(Popup, Widget):
+    def __init__(self, controller, model, **kw):
+        super().__init__(**kw)
+        self.controller = controller
+        self.model = model
+        self.found_list = self.model.return_table_search_employee()
+        self.table = MDDataTable(pos_hint={'center_y': 0.56, 'center_x': 0.5},
+                                 use_pagination=True,
+                                 check=True,
+                                 column_data=[
+                                     ("ФИО", dp(70)),
+                                     ("Должность", dp(60))], size_hint=(1, 0.7),
+                                 row_data=self.found_list)
+
+        self.add_widget(self.table)

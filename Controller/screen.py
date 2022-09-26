@@ -1,6 +1,6 @@
 from Model.screen import Model
 from View.screen import MainScreen
-from View.search_popups import SearchPopupEmployee, SearchPopupEquipment, SearchPopupWorkArea, SearchPopupTechInspection, FoundPopupTechInspection
+from View.search_popups import FoundPopupTechInspection, FoundPopupSearchEmployee
 
 class Controller:
     def __init__(self, cursor, connection):
@@ -91,14 +91,21 @@ class Controller:
 
 
     # ----------------- SEARCH --------------------------------
-    def get_table_search_tech_inspection(self):
-        return self.model.get_table_search_tech_inspection()
     def set_search_tech_inspection_equipment_number(self, number):
         self.model.set_search_tech_inspection_equipment_number(number)
     def search_tech_inspection(self):
         self.model.search_tech_inspection()
     def show_table_search_tech_inspection(self):
         FoundPopupTechInspection(controller=self, model = self.model).open()
+
+    def search_employee_date(self):
+        self.model.search_employee()
+    def set_search_employee_date(self, date):
+        self.model.set_search_employee_date(date)
+    def get_search_employee_date(self):
+        self.model.return_table_search_employee()
+    def show_table_search_emeployee(self):
+        FoundPopupSearchEmployee(controller=self, model=self.model).open()
 
 
     # ---------------------------------------------------------
