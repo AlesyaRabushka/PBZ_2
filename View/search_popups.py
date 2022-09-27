@@ -37,15 +37,39 @@ class SearchPopupEquipment(Popup, Widget):
         self.controller = controller
         self.table = table
 
-    def set_equipment_number(self, number):
-        self.controller.set_equipment_number(number)
-    def set_equipment_name(self, name):
-        self.controller.set_equipment_name(name)
-    def set_equipment_type(self, type):
-        self.controller.set_equipment_type(type)
-    def add_equipment(self):
-        self.controller.add_equipment()
-        self.table.to_table_equipment()
+    def set_search_equipment_date(self, date):
+        self.controller.set_search_equipment_date(date)
+
+    def search_equipment(self):
+        self.controller.search_equipment()
+
+    def choose_search_equipment(self):
+        date_dialog = MDDatePicker(min_year=2010, max_year=2022)
+        date_dialog.bind(on_save=self.set_search_equipment_date_calendar)
+        date_dialog.open()
+    def set_search_equipment_date_calendar(self, instance, value, date_range):
+        self.set_search_equipment_date(str(value))
+        self.ids.search_equipment_date.text = str(value)
+
+
+class FoundPopupEquipment(Popup, Widget):
+    def __init__(self, controller, model, **kw):
+        super().__init__(**kw)
+        self.controller = controller
+        self.model = model
+        self.found_list = self.model.return_table_search_equipment()
+        self.table = MDDataTable(pos_hint={'center_y': 0.56, 'center_x': 0.5},
+                                 use_pagination=True,
+                                 check=True,
+                                 column_data=[
+                                     ("Дата", dp(40)),
+                                     ("Название оборудования", dp(40)),
+                                     ("Тип оборудования", dp(40)),
+                                     ("Название участка", dp(40)),
+                                     ("Причина отказа", dp(60))], size_hint=(1, 0.7),
+                                 row_data=self.found_list)
+
+        self.add_widget(self.table)
 
 
 class SearchPopupTechInspection(Popup, Widget):

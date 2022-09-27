@@ -36,6 +36,7 @@ class Model:
         self.table_search_tech_inspection = []
         self.table_search = []
         self.search_employee_date = ''
+        self.search_equipment_date = ''
 
 
     # ------------- EMPLOYEE --------
@@ -248,3 +249,29 @@ class Model:
 
     def return_table_search_employee(self):
         return self.table_search
+
+    # SEARCH EQUIPMENT
+    def set_search_equipment_date(self, date):
+        self.search_equipment_date = datetime.strptime(date, '%Y-%m-%d')
+    def return_table_search_equipment(self):
+        return self.table_search
+    def search_equipment(self):
+        self.table_search = []
+        self.cursor.execute(
+            f"select технический_осмотр.дата, оборудование.название, оборудование.тип, производственный_участок.название, технический_осмотр.причина "
+            f"from производственный_участок "
+            f"inner join оборудование "
+            f"on производственный_участок.тип_оборудования = оборудование.тип "
+            f"inner join технический_осмотр "
+            f"on оборудование.номер = технический_осмотр.номер_оборудования "
+            f"where технический_осмотр.дата = '{self.search_equipment_date}'::date")
+        rows = self.cursor.fetchall()
+        for row in rows:
+            tech_inspection = []
+            tech_inspection.append(row[0])
+            tech_inspection.append(row[1])
+            tech_inspection.append(row[2])
+            tech_inspection.append(row[3])
+            tech_inspection.append(row[4])
+            self.table_search.append(tech_inspection)
+        self.controller.show_table_search_equipment()
