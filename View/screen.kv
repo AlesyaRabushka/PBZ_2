@@ -404,8 +404,8 @@
         GridLayout:
             cols: 2
             rows: 1
-            spacing:30
-            padding:100,0,100,40
+            spacing:20
+            padding:30,0,30,20
             Button:
                 text: 'Добавить'
                 background_normal:''
@@ -414,12 +414,12 @@
                 on_press: root.add_tech_inspection()
 
             Button:
-                text: 'Вернуться в главное меню'
+                text: 'Вернуться в\nглавное меню'
                 background_normal:''
                 background_color: (68/256,182/256,235/256,1)
                 #disabled: True if root.everything() else False
                 on_press: root.dismiss()
-                pos_hint: {"center_x": .5,"center_y":.5}
+                pos_hint: {"center_x": .5}
 
 
 # ------------------- REMOVE POPUPS ------------------------------
@@ -876,6 +876,23 @@
                 on_text: root.set_work_area_name(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
+        GridLayout:
+            cols: 2
+            rows: 1
+            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Название:"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_work_area_equipment_type
+                on_text: root.set_work_area_equipment_type(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
 
         GridLayout:
             cols: 1
@@ -1142,7 +1159,23 @@
         GridLayout:
             cols: 2
             rows: 1
-            size_hint_y:None
+            padding:20,0,10,0
+
+            Label:
+                text: "Номер\nоборудования"
+                markup: True
+                color: (68/256,182/256,235/256,1)
+                font_size: '15sp'
+
+            MyField
+                id: update_tech_inspection_equipment_number
+
+                on_text: root.set_tech_inspection_equipment_number(self.text)
+                pos_hint: {"center_x": .5,"center_y":.5}
+
+        GridLayout:
+            cols: 2
+            rows: 1
             padding:20,0,10,0
 
             Label:
@@ -1153,6 +1186,7 @@
 
             MyField
                 id: update_tech_inspection_result
+
                 on_text: root.set_tech_inspection_result(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
@@ -1193,10 +1227,10 @@
 
 
         GridLayout:
-            cols: 1
-            rows: 2
-            spacing:30
-            padding:100,0,100,40
+            cols: 2
+            rows: 1
+            spacing:20
+            padding:30,0,30,20
             Button:
                 text: 'Изменить'
                 background_normal:''
@@ -1205,12 +1239,13 @@
                 on_press: root.update_tech_inspection()
 
             Button:
-                text: 'Вернуться в главное меню'
+                text: 'Вернуться в\nглавное меню'
                 background_normal:''
+                width: '200'
                 background_color: (68/256,182/256,235/256,1)
                 #disabled: True if root.everything() else False
                 on_press: root.dismiss()
-                pos_hint: {"center_x": .5,"center_y":.5}
+                pos_hint: {"center_x": .5}
 
 
 

@@ -22,8 +22,10 @@ class UpdatePopupWorkArea(Popup, Widget):
         self.set_work_area_number(unique_info[0])
         self.set_work_area_name(unique_info[1])
         self.set_work_area_old_number(unique_info[0])
+        self.set_work_area_equipment_type(unique_info[2])
         self.ids.update_work_area_number.text = str(unique_info[0])
         self.ids.update_work_area_name.text = unique_info[1]
+        self.ids.update_work_area_equipment_type.text = unique_info[2]
 
     def update_work_area(self):
         self.controller.update_work_area()
@@ -35,6 +37,8 @@ class UpdatePopupWorkArea(Popup, Widget):
         self.controller.set_work_area_old_number(number)
     def set_work_area_name(self, name):
         self.controller.set_work_area_name(name)
+    def set_work_area_equipment_type(self, type):
+        self.controller.set_work_area_equipment_type(type)
 
 class UpdatePopupEquipment(Popup, Widget):
     """
@@ -83,13 +87,15 @@ class UpdatePopupTechInspection(Popup, Widget):
 
     def set_previous_info(self, unique_info):
         self.set_tech_inspection_old_date(unique_info[0])
-        self.set_tech_inspection_result(unique_info[1])
-        self.set_tech_inspection_worker_fio(unique_info[2])
-        self.set_tech_inspection_reason(unique_info[3])
+        self.set_tech_inspection_equipment_number(unique_info[1])
+        self.set_tech_inspection_result(unique_info[2])
+        self.set_tech_inspection_worker_fio(unique_info[3])
+        self.set_tech_inspection_reason(unique_info[4])
         self.ids.update_tech_inspection_date.text = unique_info[0]
-        self.ids.update_tech_inspection_result.text = unique_info[1]
-        self.ids.update_tech_inspection_worker_fio.text = unique_info[2]
-        self.ids.update_tech_inspection_reason.text = unique_info[3]
+        self.ids.update_tech_inspection_equipment_number.text = unique_info[1]
+        self.ids.update_tech_inspection_result.text = unique_info[2]
+        self.ids.update_tech_inspection_worker_fio.text = unique_info[3]
+        self.ids.update_tech_inspection_reason.text = unique_info[4]
 
     def choose_tech_inspection_date(self):
         date_dialog = MDDatePicker(min_year=2010, max_year=2022)
@@ -107,6 +113,8 @@ class UpdatePopupTechInspection(Popup, Widget):
         self.controller.set_tech_inspection_date(date)
     def set_tech_inspection_old_date(self, date):
         self.controller.set_tech_inspection_old_date(date)
+    def set_tech_inspection_equipment_number(self, number):
+        self.controller.set_tech_inspection_equipment_number(number)
 
     def set_tech_inspection_result(self, result):
         self.controller.set_tech_inspection_result(result)

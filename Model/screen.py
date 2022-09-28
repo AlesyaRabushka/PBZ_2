@@ -275,3 +275,4 @@ class Model:
             tech_inspection.append(row[4])
             self.table_search.append(tech_inspection)
         self.controller.show_table_search_equipment()
+
