@@ -13,7 +13,7 @@ from kivy.factory import Factory
 from View.add_popups import AddPopupEmp, AddPopupEquipment, AddPopupWorkArea, AddPopupTechInspection
 from View.remove_popups import RemovePopupEquipment, RemovePopupWorkArea, RemovePopupTechInspection, RemovePopupEmployee
 from View.update_popups import UpdatePopupEquipment, UpdatePopupWorkArea, UpdatePopupEmployee, UpdatePopupTechInspection
-from View.search_popups import SearchPopupEmployee, SearchPopupEquipment, SearchPopupWorkArea, SearchPopupTechInspection
+from View.search_popups import SearchPopupEmployee, SearchPopupEquipment, SearchPopupWorkArea, SearchPopupTechInspection, FoundPopupEquipment
 
 
 class MainScreen(MDScreen):
@@ -185,11 +185,11 @@ class MainScreen(MDScreen):
     # ------- OPEN SETCH POPUPS ----------
     def open_search_popup(self):
         if self.current_table_id == 1:
-            search_work_area = SearchPopupWorkArea(controller=self.controller, model=self.model, table=self)
-            search_work_area.open()
+            pass
         elif self.current_table_id == 2:
-            search_equipment = SearchPopupEquipment(controller=self.controller, model=self.model, table=self)
-            search_equipment.open()
+            self.model.search_equipment()
+            # search_equipment = FoundPopupEquipment(controller=self.controller, model=self.model, table=self)
+            # search_equipment.open()
         elif self.current_table_id == 3:
             search_tech_inspection = SearchPopupTechInspection(controller=self.controller, model=self.model)
             search_tech_inspection.open()

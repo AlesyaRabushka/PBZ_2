@@ -108,6 +108,7 @@
             MyField
                 id: pet_name_input
                 hint_text: 'Табельный номер'
+                input_filter: 'int'
                 on_text: root.set_employee_number(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
@@ -185,6 +186,7 @@
             MyField
                 hint_text: 'Номер участка'
                 max_text_length: 4
+                input_filter: 'int'
                 on_text: root.set_work_area_number(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
@@ -204,7 +206,8 @@
             size_hint_y:None
             padding:100,10,10,0
             MyField
-                hint_text: 'Тип используемого оборудования'
+                hint_text: 'Номер оборудования'
+                input_filter: 'int'
                 on_text: root.set_work_area_equipment_type(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
@@ -261,6 +264,7 @@
                 id: pet_name_input
                 hint_text: 'Номер оборудования'
                 max_text_length: 5
+                input_filter: 'int'
                 on_text: root.set_equipment_number(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
@@ -364,6 +368,7 @@
             MyField
                 id: add_tech_inspection_equipment_number
                 hint_text: 'Номер оборудования'
+                input_filter: 'int'
                 on_text: root.set_tech_inspection_equipment_number(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 
@@ -451,7 +456,7 @@
             padding:20,0,10,0
 
             Label:
-                text: "Номер оборудования:"
+                text: "Номер:"
                 markup: True
                 max_text_length: 5
                 color: (68/256,182/256,235/256,1)
@@ -850,6 +855,7 @@
                 text: "Номер участка:"
                 markup: True
                 max_text_length: 5
+                input_filter: 'int'
                 color: (68/256,182/256,235/256,1)
                 font_size: '15sp'
 
@@ -883,8 +889,9 @@
             padding:20,0,10,0
 
             Label:
-                text: "Название:"
+                text: "Номер оборудования:"
                 markup: True
+                input_filter: 'int'
                 color: (68/256,182/256,235/256,1)
                 font_size: '15sp'
 
@@ -946,6 +953,7 @@
                 text: "Номер:"
                 markup: True
                 max_text_length: 5
+                input_filter: 'int'
                 color: (68/256,182/256,235/256,1)
                 font_size: '15sp'
 
@@ -1043,6 +1051,7 @@
                 text: "Табельный номер:"
                 markup: True
                 max_text_length: 5
+                input_filter: 'int'
                 color: (68/256,182/256,235/256,1)
                 font_size: '15sp'
 
@@ -1164,6 +1173,7 @@
             Label:
                 text: "Номер\nоборудования"
                 markup: True
+                input_filter: 'int'
                 color: (68/256,182/256,235/256,1)
                 font_size: '15sp'
 
@@ -1283,6 +1293,7 @@
             MyField
                 id: update_tech_inspection_date
                 hint_text: 'Номер инвентаря'
+                input_filter: 'int'
                 on_text: root.set_search_tech_inspection_equipment_number(self.text)
                 pos_hint: {"center_x": .5,"center_y":.5}
 

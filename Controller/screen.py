@@ -10,6 +10,8 @@ class Controller:
         self.model = Model(controller = self, cursor = self.cursor, connection = self.connection)
         self.main_view = MainScreen(controller = self, model = self.model)
 
+        self.currect_data_input = True
+
 
 
     # -------- EMPLOYEE --------
@@ -39,6 +41,7 @@ class Controller:
     # ------------- EQUIPMENT ---------------
     def set_equipment_number(self, number):
         self.model.set_equipment_number(number)
+
     def set_equipment_old_number(self, number):
         self.model.set_equipment_old_number(number)
     def set_equipment_name(self, name):
@@ -46,7 +49,10 @@ class Controller:
     def set_equipment_type(self, type):
         self.model.set_equipment_type(type)
     def add_equipment(self):
-        self.model.add_equipment()
+        if self.currect_data_input:
+            self.model.add_equipment()
+        else:
+            print('The input data is not correct')
     def remove_equipment(self, number):
         self.model.remove_equipment(number)
     def update_equipment(self):

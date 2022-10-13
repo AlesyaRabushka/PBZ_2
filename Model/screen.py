@@ -51,21 +51,37 @@ class Model:
 
     # add EMPLOYEE info
     def add_employee(self):
-        if self.employee_number != '':
-            self.cursor.execute(f"insert into сотрудник(табельный_номер, фио, должность)"
-                                f" values({self.employee_number},'{self.employee_fio}','{self.employee_job}')")
-            self.connection.commit()
+        try:
+            if self.employee_number != '':
+                self.cursor.execute(f"insert into сотрудник(табельный_номер, фио, должность)"
+                                    f" values({self.employee_number},'{self.employee_fio}','{self.employee_job}')")
+
+        except:
+            print('The input data is not correct -- add_employee')
+        self.connection.commit()
+
+
+    def remove_e1(self, number):
+        self.cursor.execute(f"delete from технический_осмотр"
+                            f" where сотрудник = (select сотрудник.фио from сотрудник where табельный_номер = {int(number)})")
+        self.connection.commit()
     # delete EMPLOYEE info
     def remove_employee(self, number):
-        self.cursor.execute(f"delete from сотрудник"
-                            f" where табельный_номер = {int(number)}")
+        self.remove_e1(number)
+        try:
+            self.cursor.execute(f"delete from сотрудник"
+                                f" where табельный_номер = {int(number)}")
+        except:
+            print('The error has occurred -- remove_employee')
         self.connection.commit()
     # update EMPLOYEE info
     def update_employee(self):
-        print(self.employee_old_number, self.employee_fio, self.employee_job )
-        self.cursor.execute(f"update сотрудник"
-                            f" set табельный_номер = '{int(self.employee_number)}', фио = '{self.employee_fio}', должность = '{self.employee_job}'"
-                            f" where табельный_номер = {self.employee_old_number}")
+        try:
+            self.cursor.execute(f"update сотрудник"
+                                f" set табельный_номер = '{int(self.employee_number)}', фио = '{self.employee_fio}', должность = '{self.employee_job}'"
+                                f" where табельный_номер = {self.employee_old_number}")
+        except:
+            print('The input data is not correct -- update_employee')
         self.connection.commit()
 
 
@@ -80,19 +96,25 @@ class Model:
     def set_work_area_equipment_type(self, type):
         self.work_area_equipment_type = type
     def add_work_area(self):
-        if self.work_area_number != '':
-            self.cursor.execute(f"insert into производственный_участок(номер, название, тип_оборудования)"
-                                f" values({self.work_area_number},'{self.work_area_name}', '{self.work_area_equipment_type}')")
-            self.connection.commit()
+        try:
+            if self.work_area_number != '':
+                self.cursor.execute(f"insert into производственный_участок(номер, название, номер_оборудования)"
+                                    f" values({self.work_area_number},'{self.work_area_name}', '{self.work_area_equipment_type}')")
+        except:
+            print("The input data is not correct -- add_work_area")
+        self.connection.commit()
     def remove_work_area(self, number):
         self.cursor.execute(f"delete from производственный_участок"
                             f" where номер = {int(number)}")
         self.connection.commit()
 
     def update_work_area(self):
-        self.cursor.execute(f"update производственный_участок"
-                            f" set название = '{self.work_area_name}', номер = '{self.work_area_number}', тип_оборудования = '{self.work_area_equipment_type}'"
-                            f" where номер = {int(self.work_area_old_number)}")
+        try:
+            self.cursor.execute(f"update производственный_участок"
+                                f" set название = '{self.work_area_name}', номер = '{self.work_area_number}', номер_оборудования = '{self.work_area_equipment_type}'"
+                                f" where номер = {int(self.work_area_old_number)}")
+        except:
+            print("The input data is not correct -- update_work_area")
         self.connection.commit()
 
     # ------------ EQUIPMENT -------------
@@ -105,17 +127,30 @@ class Model:
     def set_equipment_type(self, type):
         self.equipment_type = type
     def add_equipment(self):
-        self.cursor.execute(f"insert into оборудование(номер, название,тип)"
-                            f" values({self.equipment_number},'{self.equipment_name}','{self.equipment_type}')")
+        try:
+            self.cursor.execute(f"insert into оборудование(номер, название,тип)"
+                                f" values({self.equipment_number},'{self.equipment_name}','{self.equipment_type}')")
+
+        except:
+            print('The input data is not correct -- add_equipment')
+        self.connection.commit()
+
+    def remove_eq1(self, number):
+        self.cursor.execute(f"delete from производственный_участок"
+                            f" where номер_оборудования = {int(number)}")
         self.connection.commit()
     def remove_equipment(self, number):
+        self.remove_eq1(number)
         self.cursor.execute(f"delete from оборудование"
                             f" where номер = {int(number)}")
         self.connection.commit()
     def update_equipment(self):
-        self.cursor.execute(f"update оборудование"
-                            f" set название = '{self.equipment_name}', тип = '{self.equipment_type}', номер = '{int(self.equipment_number)}'"
-                            f" where номер = {int(self.equipment_old_number)}")
+        try:
+            self.cursor.execute(f"update оборудование"
+                                f" set название = '{self.equipment_name}', тип = '{self.equipment_type}', номер = '{int(self.equipment_number)}'"
+                                f" where номер = {int(self.equipment_old_number)}")
+        except:
+            print('The input data is not correct -- update_equipment')
         self.connection.commit()
 
     # ------------ TECH INSPECTION --------
@@ -128,8 +163,12 @@ class Model:
     def set_tech_inspection_reason(self, reason):
         self.tech_inspection_reason = reason
     def add_tech_inspection(self):
-        self.cursor.execute(f"insert into технический_осмотр(дата, номер_оборудования, результат, сотрудник, причина)"
-                            f" values('{self.tech_inspection_date}',{self.tech_inspection_equipment_number},'{self.tech_inspection_result}','{self.tech_inspection_worker_fio}','{self.tech_inspection_reason}')")
+        try:
+            self.cursor.execute(f"insert into технический_осмотр(дата, номер_оборудования, результат, сотрудник, причина)"
+                                f" values('{self.tech_inspection_date}',{self.tech_inspection_equipment_number},"
+                                f"'{self.tech_inspection_result}','{self.tech_inspection_worker_fio}','{self.tech_inspection_reason}')")
+        except:
+            print('The input data is not correct -- add_tech_inspection')
         self.connection.commit()
     def set_tech_inspection_date(self, birth):
         self.tech_inspection_date = datetime.strptime(birth, '%Y-%m-%d')
@@ -140,16 +179,24 @@ class Model:
                             f"where дата = '{date}'::date")
         self.connection.commit()
     def update_tech_inspection(self):
-        self.cursor.execute(f"update технический_осмотр"
-                            f" set дата = '{self.tech_inspection_date}', номер_оборудования = '{self.tech_inspection_equipment_number}', результат = '{self.tech_inspection_result}', сотрудник = '{self.tech_inspection_worker_fio}', причина = '{self.tech_inspection_reason}'"
-                            f" where дата = '{self.tech_inspection_old_date}'::date")
+        try:
+            self.cursor.execute(f"update технический_осмотр"
+                                f" set дата = '{self.tech_inspection_date}', номер_оборудования = '{self.tech_inspection_equipment_number}',"
+                                f" результат = '{self.tech_inspection_result}', сотрудник = '{self.tech_inspection_worker_fio}', причина = '{self.tech_inspection_reason}'"
+                                f" where дата = '{self.tech_inspection_old_date}'::date")
+        except:
+            print('The input data is not correct -- update_tech_inspection')
         self.connection.commit()
 
 
     # return table ПРОИЗВОДСТВЕННЫЙ_УЧАСТОК
     def get_table_work_area(self):
         table_work_are_list = []
-        self.cursor.execute("select * from производственный_участок")
+        self.cursor.execute("select производственный_участок.номер, производственный_участок.название, оборудование.тип "
+                            "from производственный_участок "
+                            "inner join оборудование "
+                            "on оборудование.номер = производственный_участок.номер_оборудования "
+                            "where производственный_участок.номер_оборудования = оборудование.номер")
         rows = self.cursor.fetchall()
         for row in rows:
             work_area = []
@@ -231,7 +278,7 @@ class Model:
     def search_employee(self):
         self.table_search = []
         self.cursor.execute(
-            f"select сотрудник.фио, сотрудник.должность "
+            f"select технический_осмотр.дата, сотрудник.фио, сотрудник.должность "
             f"from технический_осмотр "
             f"inner join сотрудник "
             f"on технический_осмотр.сотрудник = сотрудник.фио "
@@ -241,6 +288,7 @@ class Model:
             tech_inspection = []
             tech_inspection.append(row[0])
             tech_inspection.append(row[1])
+            tech_inspection.append(row[2])
             self.table_search.append(tech_inspection)
         self.controller.show_table_search_emeployee()
 
@@ -258,13 +306,13 @@ class Model:
     def search_equipment(self):
         self.table_search = []
         self.cursor.execute(
-            f"select технический_осмотр.дата, оборудование.название, оборудование.тип, производственный_участок.название, технический_осмотр.причина "
+            f"select distinct технический_осмотр.дата, оборудование.название, оборудование.тип, производственный_участок.название, технический_осмотр.причина "
             f"from производственный_участок "
             f"inner join оборудование "
-            f"on производственный_участок.тип_оборудования = оборудование.тип "
+            f"on производственный_участок.номер_оборудования = оборудование.номер "
             f"inner join технический_осмотр "
             f"on оборудование.номер = технический_осмотр.номер_оборудования "
-            f"where технический_осмотр.дата = '{self.search_equipment_date}'::date")
+            f"where технический_осмотр.результат = 'Неисправен'")
         rows = self.cursor.fetchall()
         for row in rows:
             tech_inspection = []

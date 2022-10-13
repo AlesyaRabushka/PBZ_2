@@ -145,6 +145,7 @@ class FoundPopupSearchEmployee(Popup, Widget):
                                  use_pagination=True,
                                  check=True,
                                  column_data=[
+                                     ("Дата", dp(60)),
                                      ("ФИО", dp(70)),
                                      ("Должность", dp(60))], size_hint=(1, 0.7),
                                  row_data=self.found_list)
